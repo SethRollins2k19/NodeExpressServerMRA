@@ -1,4 +1,3 @@
-const emulatedBD = require("../emulatedBD")
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://Admin:root@toxin-s35ys.gcp.mongodb.net/Toxin?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {

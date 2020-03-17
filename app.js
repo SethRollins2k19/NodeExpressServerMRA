@@ -9,8 +9,29 @@ var cors = require("cors");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var roomController = require('./controllers/roomController')
-var usersController  = require("./controllers/usersController")
 var app = express();
+//
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://Admin:root@toxin-s35ys.gcp.mongodb.net/Toxin?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+})
+const mongoServer = client.connect()
+const getLogin = (request,response) => {
+    const {email,password} = request.body
+    mongoServer.then(err=>{
+        const collection = client.db("Toxin").collection("Users")
+        collection.find({email,password}).toArray((err,res) => {
+            response.send(res)
+        })
+    })
+}
+const createAccount = (request,response) => {
+    console.log(request.body)
+    response.send("")
+}
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,13 +43,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 // app.use('/RoomFetch',roomController.getRooms)
 // app.post('/RoomFetch1',.getRooms)
 app.get('/RoomFetch2',roomController.getRooms)
-app.post('/getLogin',usersController.getUser)
+app.post('/getLogin',getLogin)
+app.post('/registerAccount',createAccount)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
