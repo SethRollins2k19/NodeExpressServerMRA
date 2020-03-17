@@ -27,8 +27,8 @@ exports.ROOMS = [
             Babies: 1
         },
         details: ['comfort','convenience','cosiness'],
-        minDate: "01/10/2020",
-        maxDate: "06/10/2020",
+        minDate:"01/10/2020",
+        maxDate:"06/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
@@ -52,8 +52,8 @@ exports.ROOMS = [
             Babies: 4
         },
         details: ['comfort','cosiness'],
-        minDate: "03/11/2020",
-        maxDate: "06/10/2020",
+        minDate:"03/11/2020",
+        maxDate:"06/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
@@ -77,8 +77,8 @@ exports.ROOMS = [
             Babies: 4
         },
         details: ['comfort','convenience','cosiness'],
-        minDate: "03/11/2020",
-        maxDate: "06/10/2020",
+        minDate:"03/11/2020",
+        maxDate:"06/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
@@ -102,8 +102,8 @@ exports.ROOMS = [
             Babies: 4
         },
         details: ['comfort','convenience','cosiness'],
-        minDate: "03/11/2020",
-        maxDate: "06/10/2020",
+        minDate:"03/11/2020",
+        maxDate:"06/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
@@ -128,7 +128,7 @@ exports.ROOMS = [
         },
         details: ['comfort','convenience','cosiness'],
         minDate: "03/11/2020",
-        maxDate: "06/10/2020",
+        maxDate:"06/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
@@ -152,8 +152,8 @@ exports.ROOMS = [
             Babies: 4
         },
         details: ['comfort','convenience','cosiness'],
-        minDate: "03/11/2020",
-        maxDate: "06/10/2020",
+        minDate:"03/11/2020",
+        maxDate:"06/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
@@ -177,9 +177,20 @@ exports.ROOMS = [
             Babies: 4
         },
         details: ['comfort','convenience','cosiness'],
-        minDate: "03/11/2020",
-        maxDate: "04/10/2020",
+        minDate:"03/11/2020",
+        maxDate:"04/10/2020",
         rules : ['No smoke', 'No children', 'No pets'],
         refund: "You can cancel your reservation with a 100% refund before 48 hours. After it, in time of 5 days, you can refund exclude service charge."
     },
+]
+exports.USERS = [
+    {
+        id: 0,
+        name: "Deninc",
+        surname: "Nehui",
+        email: "tsum@tsum.ru",
+        password: "1001",
+        orders: [],
+        avatar: "https://github.com/SethRollins2k19/FTP/blob/master/room-1-bedroom.png?raw=true"
+    }
 ]

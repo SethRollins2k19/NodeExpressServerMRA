@@ -1,3 +1,4 @@
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -8,7 +9,7 @@ var cors = require("cors");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var roomController = require('./controllers/roomController')
-
+var usersController  = require("./controllers/usersController")
 var app = express();
 
 // view engine setup
@@ -27,6 +28,7 @@ app.use('/users', usersRouter);
 // app.use('/RoomFetch',roomController.getRooms)
 // app.post('/RoomFetch1',.getRooms)
 app.get('/RoomFetch2',roomController.getRooms)
+app.post('/getLogin',usersController.getUser)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
