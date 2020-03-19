@@ -29,7 +29,35 @@ const getLogin = (request,response) => {
 }
 const createAccount = (request,response) => {
     console.log(request.body)
-    response.send("")
+    let {name,surname,email,password,sex,birthday,promo} = request.body.user
+    birthday = birthday.split('T')[0]
+    birthday = birthday.split('-')
+    birthday = `${birthday[1]}/${birthday[2]}/${birthday[0]}`
+    mongoServer.then(err=>{
+        const collection = client.db("Toxin").collection("Users")
+        collection.find({email}).toArray((err,res)=>{
+            console.log(res)
+            if(res.length === 0){
+                console.log("insert")
+                collection.insertOne({
+                    name,
+                    surname,
+                    email,
+                    password,
+                    sex,
+                    birth: birthday,
+                    specialOffers: promo,
+                    avatar: "",
+                    orders: []
+                })
+                response.send({message: "Account has been created",error: false})
+            } else {
+                console.log("no insert")
+                response.send({message: "Such account has already been created",error: true})
+            }
+        })
+    })
+    console.log(birthday)
 }
 
 
