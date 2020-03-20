@@ -11,6 +11,18 @@ var usersRouter = require('./routes/users');
 var roomController = require('./controllers/roomController')
 var app = express();
 //
+
+//assistant func
+const toNormalDate = (date) => {
+    date = date.split('T')[0]
+    date = date.split('-')
+    date = `${date[1]}/${date[2]}/${date[0]}`
+    return date
+}
+
+
+
+
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://Admin:root@toxin-s35ys.gcp.mongodb.net/Toxin?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -18,21 +30,37 @@ const client = new MongoClient(uri, {
     useNewUrlParser: true
 })
 const mongoServer = client.connect()
-const getLogin = (request,response) => {
-    const {email,password} = request.body
-    mongoServer.then(err=>{
+const getLogin = (request, response) => {
+    const {email, password} = request.body
+    mongoServer.then(err => {
         const collection = client.db("Toxin").collection("Users")
-        collection.find({email,password}).toArray((err,res) => {
-            response.send(res)
+        collection.find({email, password}).toArray((err, res) => {
+            if(res.length === 0){
+                response.send(res)
+            } else {
+                console.log("TYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+                getOrders(res[0]._id.toString()).then(orders => {
+                    response.send({
+                        ...res[0],
+                        orders
+                    })
+                })
+            }
         })
     })
+    let getOrders = (key) => new Promise(((resolve, reject) => {
+        const collectionOrder = client.db("Toxin").collection("Orders")
+        collectionOrder.find({key}).toArray((err, res) => {
+            resolve(res)
+        })
+    }))
 }
+
+
 const createAccount = (request,response) => {
     console.log(request.body)
-    let {name,surname,email,password,sex,birthday,promo} = request.body.user
-    birthday = birthday.split('T')[0]
-    birthday = birthday.split('-')
-    birthday = `${birthday[1]}/${birthday[2]}/${birthday[0]}`
+    let {name, surname, email, password, sex, birthday, promo} = request.body.user
+    birthday = toNormalDate(birthday)
     mongoServer.then(err=>{
         const collection = client.db("Toxin").collection("Users")
         collection.find({email}).toArray((err,res)=>{
@@ -47,8 +75,7 @@ const createAccount = (request,response) => {
                     sex,
                     birth: birthday,
                     specialOffers: promo,
-                    avatar: "",
-                    orders: []
+                    avatar: ""
                 })
                 response.send({message: "Account has been created",error: false})
             } else {
@@ -60,6 +87,40 @@ const createAccount = (request,response) => {
     console.log(birthday)
 }
 
+const addOrder = (request, response) =>{
+    let {key,room,roomName,arrived,shipped,status,totalPrice} = request.body
+    arrived = toNormalDate(arrived)
+    shipped = toNormalDate(shipped)
+    if(key!=="") {
+        mongoServer.then(err => {
+            collection = client.db("Toxin").collection("Orders")
+            collection.find({
+                key,
+                room,
+                roomName,
+                status
+            }).toArray((err,res)=>{
+                if(res.length === 0){
+                    collection.insertOne({
+                        key,
+                        room,
+                        roomName,
+                        arrived,
+                        shipped,
+                        status,
+                        totalPrice
+                    })
+                    response.send("")
+                } else {
+                    response.send("You have already reserved this room")
+                }
+            })
+
+        })
+    } else {
+        response.send("To reserve this room need to be loggined")
+    }
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -78,6 +139,7 @@ app.use('/users', usersRouter);
 app.get('/RoomFetch2',roomController.getRooms)
 app.post('/getLogin',getLogin)
 app.post('/registerAccount',createAccount)
+app.post('/orderRoom',addOrder)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
